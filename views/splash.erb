@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-		<link rel="stylesheet" href="public/styles.css">
+		<link rel="stylesheet" href="/styles.css">
 		<title></title>
 	</head>
 	<body>
@@ -10,15 +10,41 @@
 			<div class="row titles--row">
 				<h1> To Do List </h1>
 			</div>
-			<div class="row list--row">
+			<div class="row form--row">
 				<form action="/list" method="POST">
 				<input type="text" name="task" placeholder="List item goes here"/>
-				<button type="submit">submit<value="Add Item"
+				<button type="submit">submit</button>
 				</form>
 
 			</div>	
-		
 
+				<form method="Post">
+			<div class="row list--row">
+					
+				<% @list.each_with_index do |item, index| %>
+					<div class="col-sm-12 <%= 'completed' if item.complete? %>">
+						<label for="task"> <%= item.task  %> <%= @time.strftime("%m-%d-%Y at %I:%M%p") %></label>
+						<input type="checkbox" name="task[]" value=  "<%= index %>">
+					</div>
+					
+					 
+					
+				<% end %>
+
+
+			</div>	
+					
+					<button type="submit" formaction="/remove">remove</button>
+					<button type="submit" formaction="/complete">Mark Completed</button>
+					</form>
+					
 		</div>
 	</body>
 </html>
+
+
+
+
+
+
+

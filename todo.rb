@@ -12,33 +12,81 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 
+
+class List
+	def initialize(name, list)
+		@name=name
+		@list=[list]
+	end
+end
+
 class Items
+	attr_accessor :task
 	def initialize(task)
 		@task=task
-		
+		@complete=false
+		@remove=false
+	end
+	def complete
+		@complete=true
+	end
+	def complete?
+		return @complete
 	end
 
+	def remove
+		@remove=true
+	end
+
+	def remove?
+		return @remove
+	end
 end
 
 
 list=[]
-run=Items.new("run")
-puts run
+newlist=List.new("newlist", list)
+
+
+
 
 
 get '/' do 
+	time=Time.new
+	@time=time
+	@list=list
 	erb :splash
-
-	
 end
 
 post '/list' do
-	@task=Item.new(params)
-	list.push(@task)
-	
+	new_item=Items.new(params[:task])
+	list.push(new_item)
+
 redirect to ('/')
+end
+
+post '/complete' do
+	params[:task].each do |index|
+		list[index.to_i].complete
+	end
+
+	
+	redirect to ('/')
+end
+
+post '/remove' do 
+	params[:task].reverse_each do |index|
+		p index.to_i
+		list.delete_at(index.to_i)
+		p list
+	end
+
+	redirect to ('/')
 
 end
+
+
+
 
 
 
